@@ -6,6 +6,16 @@
 
 We study a tiling problem originating with **Doris Schattschneider**: classify **unilateral, equitransitive tilings** of the plane by squares of different integer sizes.
 
+She studied and enumerated all valid patterns with 3 square sizes (1, 2, & 3).
+
+This research is to find all valid patterns with 4 square sizes (1, 2, 3, & 4).
+
+The algorithm to find such valid patterns:
+1- enumerate all coronas with a center of size 1, then center of size 2, then 3, then 4.
+2- For each corona, find other compatible coronas with it
+3- if we find 4 compatible coronas (one with a different square-size in center), we can put them together to make a valid tiling pattern. 
+4- enumerate all these possible patterns.
+
 A key step is enumerating all **valid local neighborhoods ("coronas")** around a central square that satisfy the geometric and symmetry constraints.
 
 This code focuses on **enumerating unique valid coronas**, starting with small center sizes (currently implemented for center = 1).

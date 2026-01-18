@@ -9,7 +9,7 @@
 
 ---
 
-## Phase 1: Enumerate Valid 2-Coronas
+## Phase 1: Enumerate Valid 2-Coronas ✓
 
 ### Goal
 Generate all valid coronas with center size = 2, save to valid-coronas.json
@@ -31,6 +31,7 @@ Generate all valid coronas with center size = 2, save to valid-coronas.json
    - Generate all 4-edge combinations
    - Validate each corona
    - Deduplicate using canonical rotation
+   - Visualize these enumerated coronas in the webpage (index.html)
    
 4. **Update valid-coronas.json**
    - Extend JSON structure to support multiple center sizes
@@ -40,10 +41,11 @@ Generate all valid coronas with center size = 2, save to valid-coronas.json
 ### Expected Output
 - Updated valid-coronas.json with 2-coronas added
 - Console output: count of unique 2-coronas found
+- Visualize these enumerated coronas in the webpage (index.html)
 
 ---
 
-## Phase 2: Enumerate Valid 3-Coronas
+## Phase 2: Enumerate Valid 3-Coronas ✓
 
 ### Goal
 Generate all valid coronas with center size = 3, append to valid-coronas.json
@@ -63,6 +65,7 @@ Generate all valid coronas with center size = 3, append to valid-coronas.json
 3. **Enumerate and validate**
    - Generate all 4-edge combinations
    - Apply validation and deduplication
+   - Visualize these enumerated coronas in the webpage (index.html)
    
 4. **Append to valid-coronas.json**
    - Add `"3": [...]` entry
@@ -70,10 +73,11 @@ Generate all valid coronas with center size = 3, append to valid-coronas.json
 ### Expected Output
 - valid-coronas.json includes 3-coronas
 - Count of unique 3-coronas
+- Visualize these enumerated coronas in the webpage (index.html)
 
 ---
 
-## Phase 3: Enumerate Valid 4-Coronas
+## Phase 3: Enumerate Valid 4-Coronas ✓
 
 ### Goal
 Generate all valid coronas with center size = 4, append to valid-coronas.json
@@ -86,6 +90,7 @@ Generate all valid coronas with center size = 4, append to valid-coronas.json
    
 2. **Enumerate and validate**
    - Same process as phases 1-2
+   - Visualize these enumerated coronas in the webpage (index.html)
    
 3. **Finalize valid-coronas.json**
    - Complete structure: `{ "1": [...], "2": [...], "3": [...], "4": [...] }`
@@ -93,6 +98,7 @@ Generate all valid coronas with center size = 4, append to valid-coronas.json
 ### Expected Output
 - Complete valid-coronas.json with all center sizes 1-4
 - Final counts for each center size
+- Visualize these enumerated coronas in the webpage (index.html)
 
 ---
 
@@ -193,10 +199,11 @@ Save to `corona-compatibility.json`:
 ## Success Criteria
 
 ### Phase 1-3 Complete When:
-- [✓] valid-coronas.json contains all coronas for centers 1-4
+- [✓] valid-coronas.json contains all coronas for centers 1-4 (7994 total)
 - [✓] All coronas pass validation
 - [✓] No duplicates (verified via canonical rotation)
 - [✓] JSON structure is consistent and parseable
+- [✓] Web app displays coronas by center size
 
 ### Phase 4 Complete When:
 - [✓] corona-compatibility.json exists
