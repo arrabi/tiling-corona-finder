@@ -1,4 +1,4 @@
-# Tiling Corona Finder (TypeScript)
+# Tiling Corona Finder
 
 ## Project Summary: Equitransitive Square Corona Enumeration
 
@@ -26,14 +26,15 @@ This code focuses on **enumerating unique valid coronas**, starting with small c
 
 ### Prerequisites
 
-- Node.js (v16 or higher)
-- npm
+- Node.js (v16 or higher with ES modules support)
 
 ### Installation
 
 ```bash
 npm install
 ```
+
+Note: No build step required! All code is plain JavaScript.
 
 ### Run
 
@@ -65,10 +66,8 @@ Expected output:
 
 ### Other Commands
 
-- **Build to JavaScript**: `npm run build` (outputs to `compiled/`)
-- **Run directly**: `ts-node corona-finder.ts`
 - **Generate JSON**: `npm run generate`
-- **Start web server**: `npm run serve` (builds and serves on port 8000)
+- **Start web server**: `npm run serve` (serves on port 8000)
 
 ### Pre-generated Data
 
@@ -226,14 +225,14 @@ Then open http://localhost:8000/ in your browser.
 
 ---
 
-## TypeScript Features
+## JavaScript Implementation
 
 This implementation uses:
-- **Interfaces** with `readonly` properties (immutability)
+- **ES6 Modules** for clean imports/exports
 - **Classes** with validation and serialization methods
-- **Type safety** throughout (strict mode enabled)
+- **No build step** - runs directly in Node.js and browsers
 - **Static methods** for factory patterns
-- **Comprehensive type annotations**
+- **Simple and maintainable** code
 
 ---
 
@@ -242,23 +241,22 @@ This implementation uses:
 - Generalize edge-walk generation for center sizes 2, 3, and 4
 - Improve pruning during enumeration (edge-level constraints first)
 - Extend from local coronas to global tiling propagation
-- Add unit tests
-- Create web visualization interface
+- Expand test coverage
+- Enhance web visualization interface
 
 ---
 
 ## Files
 
-- `corona.ts` - Shared Corona class and interfaces
-- `corona-finder.ts` - Main TypeScript enumeration implementation
-- `generate.ts` - Script to generate and save coronas to JSON
-- `web-app.ts` - Web application for visualization
-- `tests-app.ts` - Test suite visualization
+- `corona.js` - Shared Corona class and validation logic
+- `corona-finder.js` - Main enumeration implementation
+- `generate-js-new.js` - Script to generate and save coronas to JSON
+- `web-app.js` - Web application for visualization
+- `tests-app.js` - Test suite visualization
+- `corona-finder-test.js` - Unit tests
 - `index.html` - Web UI for corona enumeration
 - `tests.html` - Web UI for validation tests
-- `package.json` - Node.js dependencies and scripts
-- `tsconfig.json` - TypeScript compiler configuration
-- `compiled/` - Compiled JavaScript files (gitignored)
+- `package.json` - Node.js configuration
 
 ---
 

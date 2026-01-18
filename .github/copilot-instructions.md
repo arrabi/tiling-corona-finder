@@ -2,12 +2,12 @@
 
 ## Instructions
 
-* the project is in typed script. The python files are from an old implementation and kept for reference. do not update them, and do not write additional pythong code. write and update only the typed script files, and the webpage files.
+* the project is in js script. The python files are from an old implementation and kept for reference. do not update them, and do not write additional pythong code. write and update only the js script files, and the webpage files.
 (the python scripts were from an old implementation and are only kept for reference)
 
 * keep any descriptions and documentation short and to the point. prioritize conciseness over grammer.
 
-* use ts-node to run typescript files directly without compiling. no need to compile to js unless specified.
+* keep it as a simple project.
 
 ## Project Overview
 
