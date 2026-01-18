@@ -2,26 +2,13 @@
 // Shared Corona data structures and class
 // ============================================================
 
-// -----------------------------
-// Data structures
-// -----------------------------
-
-interface EdgeSeg {
-    readonly size: number;
-    readonly offset: number;  // must satisfy 0 <= offset <= center
-}
-
-interface ValidationResult {
-    ok: boolean;
-    reason?: string;
-    where?: any;
-}
+/**
+ * EdgeSeg: {size: number, offset: number}
+ * ValidationResult: {ok: boolean, reason?: string, where?: any}
+ */
 
 class Corona {
-    readonly center: number;
-    readonly edges: ReadonlyArray<ReadonlyArray<EdgeSeg>>;  // exactly 4 edges, cyclic order
-
-    constructor(center: number, edges: EdgeSeg[][]) {
+    constructor(center, edges) {
         this.center = center;
         this.edges = edges;
     }
@@ -29,7 +16,7 @@ class Corona {
     // -------------------------
     // Validation
     // -------------------------
-    validate(allowedSizes: number[] = [1, 2, 3, 4]): ValidationResult {
+    validate(allowedSizes = [1, 2, 3, 4]) {
         /**
          * Validation rules (simplified, final version):
          *   - center > 0
@@ -112,7 +99,7 @@ class Corona {
         // - AND next square on same edge > 1 (or next edge's first square > 1)
         
         // Step 1: Compute overhang for each edge
-        const overhangs: number[] = [];
+        const overhangs = [];
         const sortedEdges = this.edges.map(edge => [...edge].sort((a, b) => a.offset - b.offset));
         
         for (const segs of sortedEdges) {
@@ -136,7 +123,7 @@ class Corona {
                 
                 if (seg.size === 1) {
                     // Check what's before this 1×1 square
-                    let beforeSize: number;
+                    let beforeSize;
                     if (i === 0) {
                         // First square on edge - check previous edge's overhang
                         beforeSize = prevOverhang;
@@ -146,7 +133,7 @@ class Corona {
                     }
                     
                     // Check what's after this 1×1 square
-                    let afterSize: number;
+                    let afterSize;
                     if (i === segs.length - 1) {
                         // Last square on edge - check next edge's first square
                         afterSize = nextSegs[0].size;
@@ -173,8 +160,8 @@ class Corona {
     // -------------------------
     // Compact notation printer
     // -------------------------
-    toCompact(): string {
-        const parts: string[] = [this.center.toString()];
+    toCompact() {
+        const parts = [this.center.toString()];
         
         for (const edge of this.edges) {
             const edgeSorted = [...edge].sort((a, b) => 
@@ -189,7 +176,7 @@ class Corona {
     // -------------------------
     // Compact notation parser
     // -------------------------
-    static fromCompact(s: string): Corona {
+    static fromCompact(s) {
         /**
          * Parse compact notation:
          *   <center>|a^b,c^d|a^b|a^b,c^d|a^b
@@ -204,11 +191,11 @@ class Corona {
         const center = parseInt(parts[0], 10);
         const segPat = /^(\d+)\^(-?\d+)$/;
 
-        const edges: EdgeSeg[][] = [];
+        const edges = [];
         
         for (let i = 1; i < parts.length; i++) {
             const edgeTxt = parts[i];
-            const segs: EdgeSeg[] = [];
+            const segs = [];
             
             for (const tok of edgeTxt.split(",")) {
                 const m = tok.match(segPat);
@@ -228,4 +215,5 @@ class Corona {
     }
 }
 
-export { EdgeSeg, Corona, ValidationResult };
+// Export for ES modules
+export { Corona };

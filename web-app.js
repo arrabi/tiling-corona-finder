@@ -1,16 +1,16 @@
 // Web application for visualizing coronas
 
-import { EdgeSeg, Corona, ValidationResult } from './corona.js';
+import { Corona,  } from './corona.js';
 
-function canonicalRotationEdges(edges: ReadonlyArray<ReadonlyArray<EdgeSeg>>): string {
-    function edgeKey(e: ReadonlyArray<EdgeSeg>): string {
+function canonicalRotationEdges(edges: ReadonlyArray<>) {
+    function edgeKey(e: ) {
         const sorted = [...e].sort((a, b) => 
             a.offset !== b.offset ? a.offset - b.offset : a.size - b.size
         );
         return JSON.stringify(sorted.map(seg => [seg.size, seg.offset]));
     }
 
-    const keys: string[] = [];
+    const keys[] = [];
     
     for (let k = 0; k < 4; k++) {
         const rot = [...edges.slice(k), ...edges.slice(0, k)];
@@ -22,18 +22,18 @@ function canonicalRotationEdges(edges: ReadonlyArray<ReadonlyArray<EdgeSeg>>): s
     return keys[0];
 }
 
-function enumerateUniqueCoronasCenter1(): Corona[] {
+function enumerateUniqueCoronasCenter1()[] {
     const c = 1;
     const allowedSizes = [1, 2, 3, 4];
 
-    const edgeChoices: EdgeSeg[][] = [
+    const edgeChoices[] = [
         [{ size: 2, offset: 0 }],
         [{ size: 3, offset: 0 }],
         [{ size: 4, offset: 0 }]
     ];
 
     const seen = new Set<string>();
-    const unique: Corona[] = [];
+    const unique[] = [];
 
     for (const e0 of edgeChoices) {
         for (const e1 of edgeChoices) {
@@ -64,7 +64,7 @@ function enumerateUniqueCoronasCenter1(): Corona[] {
 // Visualization
 // -----------------------------
 
-function drawCorona(corona: Corona, canvas: HTMLCanvasElement): void {
+function drawCorona(corona, canvas: HTMLCanvasElement) {
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
@@ -109,7 +109,7 @@ function drawCorona(corona: Corona, canvas: HTMLCanvasElement): void {
     );
 
     // Color palette for different sizes
-    const colors: { [key: number]: string } = {
+    const colors: { [key] } = {
         1: '#ffb74d',
         2: '#81c784',
         3: '#64b5f6',
@@ -130,7 +130,7 @@ function drawCorona(corona: Corona, canvas: HTMLCanvasElement): void {
 
             ctx.fillStyle = colors[seg.size] || '#999';
 
-            let x: number, y: number, width: number, height: number;
+            let x, y, width, height;
 
             switch (edgeIdx) {
                 case 0: // Top edge (runs left to right)

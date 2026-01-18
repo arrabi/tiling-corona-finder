@@ -1,25 +1,25 @@
 // ============================================================
-// Corona enumeration framework (TypeScript version)
+// Corona enumeration framework (JavaScript version)
 // ============================================================
 
-import { EdgeSeg, Corona, ValidationResult } from './corona';
+import { Corona } from './corona.js';
 
 // -----------------------------
 // Canonical rotation (equitransitive dedup)
 // -----------------------------
 
-function canonicalRotationEdges(edges: ReadonlyArray<ReadonlyArray<EdgeSeg>>): string {
+function canonicalRotationEdges(edges) {
     /**
      * Canonical representative of the 4 edges up to cyclic rotation (no reflection).
      */
-    function edgeKey(e: ReadonlyArray<EdgeSeg>): string {
+    function edgeKey(e) {
         const sorted = [...e].sort((a, b) => 
             a.offset !== b.offset ? a.offset - b.offset : a.size - b.size
         );
         return JSON.stringify(sorted.map(seg => [seg.size, seg.offset]));
     }
 
-    const keys: string[] = [];
+    const keys = [];
     
     for (let k = 0; k < 4; k++) {
         const rot = [...edges.slice(k), ...edges.slice(0, k)];
@@ -35,7 +35,7 @@ function canonicalRotationEdges(edges: ReadonlyArray<ReadonlyArray<EdgeSeg>>): s
 // Enumeration for center = 1
 // -----------------------------
 
-function enumerateUniqueCoronasCenter1(): Corona[] {
+function enumerateUniqueCoronasCenter1() {
     /**
      * For center = 1:
      *   - valid edge walks are exactly one segment (s,0) with s in {2,3,4}
@@ -45,14 +45,14 @@ function enumerateUniqueCoronasCenter1(): Corona[] {
     const c = 1;
     const allowedSizes = [1, 2, 3, 4];
 
-    const edgeChoices: EdgeSeg[][] = [
+    const edgeChoices = [
         [{ size: 2, offset: 0 }],
         [{ size: 3, offset: 0 }],
         [{ size: 4, offset: 0 }]
     ];
 
-    const seen = new Set<string>();
-    const unique: Corona[] = [];
+    const seen = new Set();
+    const unique = [];
 
     // Generate all combinations of 4 edges
     for (const e0 of edgeChoices) {
@@ -84,11 +84,11 @@ function enumerateUniqueCoronasCenter1(): Corona[] {
 // Load coronas from JSON file
 // -----------------------------
 
-function loadCoronasFromFile(filename: string): Corona[] {
+function loadCoronasFromFile(filename) {
     const fs = require('fs');
     try {
         const data = JSON.parse(fs.readFileSync(filename, 'utf-8'));
-        return data.coronas.map((compact: string) => Corona.fromCompact(compact));
+        return data.coronas.map((compact) => Corona.fromCompact(compact));
     } catch (error) {
         console.error(`Error loading coronas from ${filename}:`, error);
         return [];
@@ -99,7 +99,7 @@ function loadCoronasFromFile(filename: string): Corona[] {
 // Run enumeration
 // -----------------------------
 
-function main(): void {
+function main() {
     const coronas = enumerateUniqueCoronasCenter1();
     console.log(`Unique coronas with center = 1: ${coronas.length}`);
     
@@ -109,9 +109,9 @@ function main(): void {
 }
 
 // Run if this is the main module
-if (require.main === module) {
+if (import.meta.url === `file://${process.argv[1]}`) {
     main();
 }
 
 // Export for use as a module
-export { EdgeSeg, Corona, ValidationResult, canonicalRotationEdges, enumerateUniqueCoronasCenter1, loadCoronasFromFile };
+export { Corona, canonicalRotationEdges, enumerateUniqueCoronasCenter1, loadCoronasFromFile };

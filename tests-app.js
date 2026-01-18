@@ -1,20 +1,20 @@
 // Test visualization app for Corona.validate()
 
-import { EdgeSeg, Corona, ValidationResult } from './corona.js';
+import { Corona,  } from './corona.js';
 
 // -----------------------------
 // Test definitions
 // -----------------------------
 
-interface TestCase {
-    name: string;
-    corona: Corona | null;  // null if corona can't be parsed
-    compactNotation: string;
-    expectedValid: boolean;
-    expectedReason?: string;
+TestCase {
+    name;
+    corona | null;  // null if corona can't be parsed
+    compactNotation;
+    expectedValid;
+    expectedReason?;
 }
 
-function createTestCases(): { section: string; tests: TestCase[] }[] {
+function createTestCases(): { section; tests: TestCase[] }[] {
     return [
         {
             section: "✅ Valid Coronas",
@@ -22,43 +22,43 @@ function createTestCases(): { section: string; tests: TestCase[] }[] {
                 {
                     name: "center=2, all edges size 3",
                     compactNotation: "2|3^0|3^0|3^0|3^0",
-                    corona: Corona.fromCompact("2|3^0|3^0|3^0|3^0"),
+                    corona.fromCompact("2|3^0|3^0|3^0|3^0"),
                     expectedValid: true
                 },
                 {
                     name: "center=2, mixed sizes 3 and 4",
                     compactNotation: "2|3^0|3^0|3^0|4^0",
-                    corona: Corona.fromCompact("2|3^0|3^0|3^0|4^0"),
+                    corona.fromCompact("2|3^0|3^0|3^0|4^0"),
                     expectedValid: true
                 },
                 {
                     name: "center=1, single segment size 2",
                     compactNotation: "1|2^0|2^0|2^0|2^0",
-                    corona: Corona.fromCompact("1|2^0|2^0|2^0|2^0"),
+                    corona.fromCompact("1|2^0|2^0|2^0|2^0"),
                     expectedValid: true
                 },
                 {
                     name: "center=1, mixed sizes 2,3,4",
                     compactNotation: "1|2^0|3^0|4^0|2^0",
-                    corona: Corona.fromCompact("1|2^0|3^0|4^0|2^0"),
+                    corona.fromCompact("1|2^0|3^0|4^0|2^0"),
                     expectedValid: true
                 },
                 {
                     name: "center=3, edge with overhang",
                     compactNotation: "3|4^0|4^0|4^0|4^0",
-                    corona: Corona.fromCompact("3|4^0|4^0|4^0|4^0"),
+                    corona.fromCompact("3|4^0|4^0|4^0|4^0"),
                     expectedValid: true
                 },
                 {
                     name: "overhang allowed (extends past center)",
                     compactNotation: "2|4^0|4^0|4^0|4^0",
-                    corona: Corona.fromCompact("2|4^0|4^0|4^0|4^0"),
+                    corona.fromCompact("2|4^0|4^0|4^0|4^0"),
                     expectedValid: true
                 },
                 {
                     name: "corner gap larger than 1x1 is OK",
                     compactNotation: "2|3^0|4^0|3^0|4^0",
-                    corona: Corona.fromCompact("2|3^0|4^0|3^0|4^0"),
+                    corona.fromCompact("2|3^0|4^0|3^0|4^0"),
                     expectedValid: true
                 }
             ]
@@ -114,7 +114,7 @@ function createTestCases(): { section: string; tests: TestCase[] }[] {
                 {
                     name: "segment size 5 not in allowed list",
                     compactNotation: "1|5^0|2^0|2^0|2^0",
-                    corona: Corona.fromCompact("1|5^0|2^0|2^0|2^0"),
+                    corona.fromCompact("1|5^0|2^0|2^0|2^0"),
                     expectedValid: false,
                     expectedReason: "invalid segment size"
                 }
@@ -145,14 +145,14 @@ function createTestCases(): { section: string; tests: TestCase[] }[] {
                 {
                     name: "center-sized segment at offset 0",
                     compactNotation: "2|2^0|2^0|2^0|2^0",
-                    corona: Corona.fromCompact("2|2^0|2^0|2^0|2^0"),
+                    corona.fromCompact("2|2^0|2^0|2^0|2^0"),
                     expectedValid: false,
                     expectedReason: "not unilateral (center-sized aligned)"
                 },
                 {
                     name: "center=1, size=1 at offset=0",
                     compactNotation: "1|1^0|2^0|2^0|2^0",
-                    corona: Corona.fromCompact("1|1^0|2^0|2^0|2^0"),
+                    corona.fromCompact("1|1^0|2^0|2^0|2^0"),
                     expectedValid: false,
                     expectedReason: "not unilateral (center-sized aligned)"
                 },
@@ -217,13 +217,13 @@ function createTestCases(): { section: string; tests: TestCase[] }[] {
                 {
                     name: "symmetric edges (all 1^0,2^1) - corner gaps OK",
                     compactNotation: "2|1^0,2^1|1^0,2^1|1^0,2^1|1^0,2^1",
-                    corona: Corona.fromCompact("2|1^0,2^1|1^0,2^1|1^0,2^1|1^0,2^1"),
+                    corona.fromCompact("2|1^0,2^1|1^0,2^1|1^0,2^1|1^0,2^1"),
                     expectedValid: true
                 },
                 {
                     name: "no corner gaps, asymmetry OK",
                     compactNotation: "2|3^0|4^0|3^0|4^0",
-                    corona: Corona.fromCompact("2|3^0|4^0|3^0|4^0"),
+                    corona.fromCompact("2|3^0|4^0|3^0|4^0"),
                     expectedValid: true
                 }
             ]
@@ -234,7 +234,7 @@ function createTestCases(): { section: string; tests: TestCase[] }[] {
                 {
                     name: "asymmetric last segments [2,2,4,4] with corner gaps",
                     compactNotation: "2|1^0,2^1|1^0,2^1|1^0,4^1|1^0,4^1",
-                    corona: Corona.fromCompact("2|1^0,2^1|1^0,2^1|1^0,4^1|1^0,4^1"),
+                    corona.fromCompact("2|1^0,2^1|1^0,2^1|1^0,4^1|1^0,4^1"),
                     expectedValid: false,
                     expectedReason: "1x1 corner gap with asymmetric edges"
                 }
@@ -247,7 +247,7 @@ function createTestCases(): { section: string; tests: TestCase[] }[] {
 // Visualization
 // -----------------------------
 
-function drawCorona(corona: Corona, canvas: HTMLCanvasElement): void {
+function drawCorona(corona, canvas: HTMLCanvasElement) {
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
@@ -275,7 +275,7 @@ function drawCorona(corona: Corona, canvas: HTMLCanvasElement): void {
     ctx.fillRect(0, 0, canvasSize, canvasSize);
 
     // Color palette for different sizes
-    const colors: { [key: number]: string } = {
+    const colors: { [key] } = {
         1: '#ffb74d',
         2: '#81c784',
         3: '#64b5f6',
@@ -293,7 +293,7 @@ function drawCorona(corona: Corona, canvas: HTMLCanvasElement): void {
 
             ctx.fillStyle = colors[seg.size] || '#999';
 
-            let x: number, y: number;
+            let x, y;
 
             switch (edgeIdx) {
                 case 0: // Top edge
@@ -356,7 +356,7 @@ function drawCorona(corona: Corona, canvas: HTMLCanvasElement): void {
     ctx.fillText(corona.center.toString(), centerX, centerY);
 }
 
-function drawInvalidPlaceholder(canvas: HTMLCanvasElement, message: string): void {
+function drawInvalidPlaceholder(canvas: HTMLCanvasElement, message) {
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 

@@ -1,15 +1,15 @@
 // Script to generate and save coronas to JSON
 import * as fs from 'fs';
-import { Corona } from './corona';
+import { Corona } from './corona.js';
 
-function canonicalRotationEdges(edges: ReadonlyArray<ReadonlyArray<{ size: number; offset: number }>>) {
-    function edgeKey(e: ReadonlyArray<{ size: number; offset: number }>) {
+function canonicalRotationEdges(edges: ReadonlyArray<ReadonlyArray<{ size; offset }>>) {
+    function edgeKey(e: ReadonlyArray<{ size; offset }>) {
         const sorted = [...e].sort((a, b) => 
             a.offset !== b.offset ? a.offset - b.offset : a.size - b.size
         );
         return JSON.stringify(sorted.map(seg => [seg.size, seg.offset]));
     }
-    const keys: string[] = [];
+    const keys[] = [];
     for (let k = 0; k < 4; k++) {
         const rot = [...edges.slice(k), ...edges.slice(0, k)];
         const rotKey = rot.map(e => edgeKey(e)).join(";");
@@ -19,7 +19,7 @@ function canonicalRotationEdges(edges: ReadonlyArray<ReadonlyArray<{ size: numbe
     return keys[0];
 }
 
-function enumerateUniqueCoronasCenter1(): Corona[] {
+function enumerateUniqueCoronasCenter1() {
     const c = 1;
     const allowedSizes = [1, 2, 3, 4];
     const edgeChoices = [
@@ -28,7 +28,7 @@ function enumerateUniqueCoronasCenter1(): Corona[] {
         [{ size: 4, offset: 0 }]
     ];
     const seen = new Set<string>();
-    const unique: Corona[] = [];
+    const unique = [];
     for (const e0 of edgeChoices) {
         for (const e1 of edgeChoices) {
             for (const e2 of edgeChoices) {

@@ -1,16 +1,14 @@
 {
   "name": "tiling-corona-finder",
   "version": "1.0.0",
+  "type": "module",
   "description": "Equitransitive Square Corona Enumeration",
-  "main": "corona-finder.ts",
+  "main": "corona-finder.js",
   "scripts": {
-    "start": "ts-node corona-finder.ts",
-    "generate": "ts-node generate.ts",
-    "build": "tsc",
-    "build:web": "npx tsc web-app.ts --outDir . --target ES2020 --lib ES2020,DOM --skipLibCheck",
-    "dev": "ts-node corona-finder.ts",
-    "serve": "npm run build:web && python3 -m http.server 8000",
-    "test": "ts-node corona-finder.test.ts"
+    "start": "node corona-finder.js",
+    "generate": "node generate-js-new.js",
+    "serve": "python3 -m http.server 8000",
+    "test": "node corona-finder-test.js"
   },
   "keywords": [
     "tiling",
@@ -18,10 +16,5 @@
     "geometry"
   ],
   "author": "",
-  "license": "ISC",
-  "devDependencies": {
-    "@types/node": "^22.10.5",
-    "ts-node": "^10.9.2",
-    "typescript": "^5.7.2"
-  }
+  "license": "ISC"
 }
