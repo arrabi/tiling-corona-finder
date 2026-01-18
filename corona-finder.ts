@@ -105,6 +105,23 @@ class Corona {
             }
         }
 
+        // Corner gap check: if overhang of edge i is 1 AND first segment of edge (i+1) is 1,
+        // there's a 1×1 gap that can only be filled by a size-1 square, violating unilateral rule
+        for (let ei = 0; ei < 4; ei++) {
+            const edge = this.edges[ei];
+            const nextEdge = this.edges[(ei + 1) % 4];
+            
+            const segs = [...edge].sort((a, b) => a.offset - b.offset);
+            const nextSegs = [...nextEdge].sort((a, b) => a.offset - b.offset);
+            
+            const overhang = segs[segs.length - 1].offset + segs[segs.length - 1].size - c;
+            const firstSegSize = nextSegs[0].size;
+            
+            if (overhang === 1 && firstSegSize === 1) {
+                return { ok: false, reason: "1x1 corner gap (forces size-1 fill)", where: { corner: ei, overhang, firstSegSize } };
+            }
+        }
+
         return { ok: true };
     }
 

@@ -280,13 +280,12 @@ switch (edgeIndex) {
 ├── web-app.ts             # Web application (standalone)
 ├── web-app.js             # Compiled browser code
 ├── index.html             # Web UI
-├── coronas-center-1.json  # Pre-computed results
+├── valid-coronas.json     # Pre-computed results
 ├── package.json           # Node.js dependencies
 ├── tsconfig.json          # TypeScript configuration
 ├── README.md              # User documentation
-├── .github/
-│   └── copilot-instructions.md  # AI assistant context
-└── original_*.py/md       # Reference Python implementation
+└── .github/
+    └── copilot-instructions.md  # AI assistant context
 ```
 
 ---
