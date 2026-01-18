@@ -133,7 +133,7 @@ Coronas are deduplicated by cyclic rotation of edges (NOT reflection):
 ```
 
 ### Loading/Saving
-- **Save**: Use `generate.py` or `generate.js`
+- **Generate**: Use `npm run generate` (runs generate.ts)
 - **Load**: Use `loadCoronasFromFile()` in TypeScript
 - File: `coronas-center-{size}.json`
 

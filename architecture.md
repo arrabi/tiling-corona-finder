@@ -274,11 +274,10 @@ switch (edgeIndex) {
 
 ```
 /
+├── corona.ts              # Shared Corona class and interfaces
 ├── corona-finder.ts       # Core TypeScript implementation
-├── generate.py            # Python script for JSON generation
-├── generate.js            # JavaScript alternative
+├── generate.ts            # TypeScript script for JSON generation
 ├── web-app.ts             # Web application (standalone)
-├── web-app.js             # Compiled browser code
 ├── index.html             # Web UI
 ├── valid-coronas.json     # Pre-computed results
 ├── package.json           # Node.js dependencies

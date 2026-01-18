@@ -216,21 +216,25 @@ test("valid: overhang allowed (edge extends past center)", () => {
 });
 
 // =====================
-// Invalid: 1x1 corner gap
+// Corner gap with asymmetric edges
 // =====================
 
-test("invalid: 1x1 corner gap forces size-1 fill", () => {
-    // Edge 0: 1^0,2^1 → overhang = 3-2 = 1
-    // Edge 1: starts with size 1
-    // Corner 0-1 has 1×1 gap that can only be filled by size-1 square
-    assert.strictEqual(isValid("2|1^0,2^1|1^0,2^1|1^0,4^1|1^0,4^1"), false);
-    assert.strictEqual(getReason("2|1^0,2^1|1^0,2^1|1^0,4^1|1^0,4^1"), "1x1 corner gap (forces size-1 fill)");
+test("valid: symmetric edges with 1x1 corner gaps OK", () => {
+    // All edges have same pattern (1^0,2^1), all last segs are size 2
+    // Symmetric → valid even with overhang=1 and firstSeg=1
+    assert.strictEqual(isValid("2|1^0,2^1|1^0,2^1|1^0,2^1|1^0,2^1"), true);
 });
 
-test("valid: corner gap larger than 1x1 is OK", () => {
-    // Edge 0: 3^0 → overhang = 3-2 = 1
-    // Edge 1: 4^0 → starts with size 4 (not 1)
-    // 1x4 corner gap can be filled without forcing size-1 square
+test("invalid: asymmetric edges with 1x1 corner gaps", () => {
+    // Edges 0,1 end with size 2; edges 2,3 end with size 4
+    // Asymmetric last segment sizes create invalid corner placements
+    assert.strictEqual(isValid("2|1^0,2^1|1^0,2^1|1^0,4^1|1^0,4^1"), false);
+    assert.strictEqual(getReason("2|1^0,2^1|1^0,2^1|1^0,4^1|1^0,4^1"), "1x1 corner gap with asymmetric edges");
+});
+
+test("valid: no 1x1 corner gaps, asymmetry OK", () => {
+    // Edge 0: 3^0 → overhang = 1, but next edge starts with size 4 (not 1)
+    // No 1x1 gaps, so asymmetry doesn't matter
     assert.strictEqual(isValid("2|3^0|4^0|3^0|4^0"), true);
 });
 
