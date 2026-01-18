@@ -30,4 +30,6 @@ jobs:
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: ./
-        exclude_assets: 'node_modules,.git,.gitignore,old-ignored-stuff'
+        cname: 
+        exclude_assets: 'node_modules'
+        .nojekyll: true
