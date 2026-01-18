@@ -51,9 +51,10 @@ Unique coronas with center = 1: 24
 
 ### Other Commands
 
-- **Build to JavaScript**: `npm run build` (outputs to `dist/`)
+- **Build to JavaScript**: `npm run build` (outputs to `compiled/`)
 - **Run directly**: `ts-node corona-finder.ts`
-- **Generate JSON**: `npm run generate` or `python3 generate.py`
+- **Generate JSON**: `npm run generate`
+- **Start web server**: `npm run serve` (builds and serves on port 8000)
 
 ### Pre-generated Data
 
@@ -192,8 +193,22 @@ interface ValidationResult {
 All main types and functions are exported for modular use:
 
 ```typescript
-import { Corona, EdgeSeg, enumerateUniqueCoronasCenter1 } from './corona-finder';
+import { Corona, EdgeSeg, ValidationResult } from './corona';
 ```
+
+---
+
+## Web Interface
+
+View the web interface:
+```bash
+npm run serve
+```
+
+Then open http://localhost:8000/ in your browser.
+
+- **Main page** (`index.html`): Generate and visualize coronas with center=1
+- **Tests page** (`tests.html`): Visual test suite showing all validation test cases
 
 ---
 
@@ -220,11 +235,16 @@ This implementation uses:
 
 ## Files
 
-- `corona-finder.ts` - Main TypeScript implementation
-- `original_app.py` - Original Python implementation
-- `original_readme.md` - Original project documentation
+- `corona.ts` - Shared Corona class and interfaces
+- `corona-finder.ts` - Main TypeScript enumeration implementation
+- `generate.ts` - Script to generate and save coronas to JSON
+- `web-app.ts` - Web application for visualization
+- `tests-app.ts` - Test suite visualization
+- `index.html` - Web UI for corona enumeration
+- `tests.html` - Web UI for validation tests
 - `package.json` - Node.js dependencies and scripts
 - `tsconfig.json` - TypeScript compiler configuration
+- `compiled/` - Compiled JavaScript files (gitignored)
 
 ---
 

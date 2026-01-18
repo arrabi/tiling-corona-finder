@@ -105,35 +105,65 @@ class Corona {
             }
         }
 
-        // Corner gap check: if overhang=1 AND firstSeg=1 at any corner,
-        // it's only valid if ALL edges have the same last segment size (symmetric).
-        // Asymmetric last segment sizes with 1×1 corners create forced invalid placements.
-        let hasCornerGap = false;
-        const lastSegSizes: number[] = [];
         
-        for (let ei = 0; ei < 4; ei++) {
-            const edge = this.edges[ei];
-            const nextEdge = this.edges[(ei + 1) % 4];
-            
-            const segs = [...edge].sort((a, b) => a.offset - b.offset);
-            const nextSegs = [...nextEdge].sort((a, b) => a.offset - b.offset);
-            
+        // Corner gap check: detect isolated 1×1 squares
+        // A 1×1 square is invalid if surrounded by larger structures:
+        // - Previous edge's overhang > 1 (or last segment > 1)
+        // - AND next square on same edge > 1 (or next edge's first square > 1)
+        
+        // Step 1: Compute overhang for each edge
+        const overhangs: number[] = [];
+        const sortedEdges = this.edges.map(edge => [...edge].sort((a, b) => a.offset - b.offset));
+        
+        for (const segs of sortedEdges) {
             const lastSeg = segs[segs.length - 1];
             const overhang = lastSeg.offset + lastSeg.size - c;
-            const firstSegSize = nextSegs[0].size;
-            
-            lastSegSizes.push(lastSeg.size);
-            
-            if (overhang === 1 && firstSegSize === 1) {
-                hasCornerGap = true;
-            }
+            overhangs.push(overhang);
         }
         
-        // If there's a 1×1 corner gap, check if all last segment sizes are equal
-        if (hasCornerGap) {
-            const allSameLastSeg = lastSegSizes.every(s => s === lastSegSizes[0]);
-            if (!allSameLastSeg) {
-                return { ok: false, reason: "1x1 corner gap with asymmetric edges", where: { lastSegSizes } };
+        // Step 2: Check each edge's squares against previous edge's overhang
+        for (let ei = 0; ei < 4; ei++) {
+            const prevEdgeIdx = (ei + 3) % 4; // Previous edge (cyclically)
+            const nextEdgeIdx = (ei + 1) % 4; // Next edge
+            
+            const segs = sortedEdges[ei];
+            const prevOverhang = overhangs[prevEdgeIdx];
+            const nextSegs = sortedEdges[nextEdgeIdx];
+            
+            // Check each square on this edge
+            for (let i = 0; i < segs.length; i++) {
+                const seg = segs[i];
+                
+                if (seg.size === 1) {
+                    // Check what's before this 1×1 square
+                    let beforeSize: number;
+                    if (i === 0) {
+                        // First square on edge - check previous edge's overhang
+                        beforeSize = prevOverhang;
+                    } else {
+                        // Not first - check previous square on same edge
+                        beforeSize = segs[i - 1].size;
+                    }
+                    
+                    // Check what's after this 1×1 square
+                    let afterSize: number;
+                    if (i === segs.length - 1) {
+                        // Last square on edge - check next edge's first square
+                        afterSize = nextSegs[0].size;
+                    } else {
+                        // Not last - check next square on same edge
+                        afterSize = segs[i + 1].size;
+                    }
+                    
+                    // If surrounded by bigger structures (both > 1), it's invalid
+                    if (beforeSize > 1 && afterSize > 1) {
+                        return { 
+                            ok: false, 
+                            reason: "isolated 1x1 square trapped by larger squares", 
+                            where: { edge: ei, segment: i, beforeSize, afterSize } 
+                        };
+                    }
+                }
             }
         }
 
