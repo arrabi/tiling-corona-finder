@@ -7,6 +7,8 @@
 
 * keep any descriptions and documentation short and to the point. prioritize conciseness over grammer.
 
+* use ts-node to run typescript files directly without compiling. no need to compile to js unless specified.
+
 ## Project Overview
 
 This project enumerates **unilateral, equitransitive tilings** of the plane by squares of different integer sizes, specifically focusing on **corona enumeration** around a central square.
