@@ -1,6 +1,6 @@
 // Unit tests for Corona.validate()
 
-import { Corona } from './corona-finder';
+import { Corona } from './corona.js';
 import assert from 'assert';
 
 let passed = 0;
@@ -228,8 +228,9 @@ test("valid: symmetric edges with 1x1 corner gaps OK", () => {
 test("invalid: asymmetric edges with 1x1 corner gaps", () => {
     // Edges 0,1 end with size 2; edges 2,3 end with size 4
     // Asymmetric last segment sizes create invalid corner placements
+    // The 1×1 square at start of edge is trapped between larger structures
     assert.strictEqual(isValid("2|1^0,2^1|1^0,2^1|1^0,4^1|1^0,4^1"), false);
-    assert.strictEqual(getReason("2|1^0,2^1|1^0,2^1|1^0,4^1|1^0,4^1"), "1x1 corner gap with asymmetric edges");
+    assert.strictEqual(getReason("2|1^0,2^1|1^0,2^1|1^0,4^1|1^0,4^1"), "isolated 1x1 square trapped by larger squares");
 });
 
 test("valid: no 1x1 corner gaps, asymmetry OK", () => {

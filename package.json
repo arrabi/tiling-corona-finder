@@ -9,7 +9,8 @@
     "build": "tsc",
     "build:web": "npx tsc web-app.ts --outDir . --target ES2020 --lib ES2020,DOM --skipLibCheck",
     "dev": "ts-node corona-finder.ts",
-    "serve": "npm run build:web && python3 -m http.server 8000"
+    "serve": "npm run build:web && python3 -m http.server 8000",
+    "test": "ts-node corona-finder.test.ts"
   },
   "keywords": [
     "tiling",
