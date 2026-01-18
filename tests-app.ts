@@ -1,6 +1,6 @@
 // Test visualization app for Corona.validate()
 
-import { EdgeSeg, Corona, ValidationResult } from './corona';
+import { EdgeSeg, Corona, ValidationResult } from './corona.js';
 
 // -----------------------------
 // Test definitions

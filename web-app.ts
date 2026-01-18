@@ -1,6 +1,6 @@
 // Web application for visualizing coronas
 
-import { EdgeSeg, Corona, ValidationResult } from './corona';
+import { EdgeSeg, Corona, ValidationResult } from './corona.js';
 
 function canonicalRotationEdges(edges: ReadonlyArray<ReadonlyArray<EdgeSeg>>): string {
     function edgeKey(e: ReadonlyArray<EdgeSeg>): string {
