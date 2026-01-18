@@ -15,35 +15,35 @@
 Generate all valid coronas with center size = 2, save to valid-coronas.json
 
 ### Implementation Tasks
-- [ ] **Extend enumeration logic** for center = 2
+- [x] **Extend enumeration logic** for center = 2
    - Valid edge walks: combinations of segments that cover length 2
    - Possible single-segment edges: `[{2,0}]`, `[{3,0}]`, `[{4,0}]`
    - Possible two-segment edges: `[{1,0},{1,1}]`, `[{1,0},{2,1}]`, `[{1,0},{3,1}]`, etc.
    - Exclude: `[{2,0}]` (violates unilateral: size == center at offset 0)
    
-- [ ] **Generate edge choices** for center = 2
+- [x] **Generate edge choices** for center = 2
    - Enumerate all valid walks covering length 2
    - Filter by unilateral constraints:
      - No consecutive equal sizes
      - No perfect center alignment (size=2 at offset=0)
    
-- [ ] **Enumerate all combinations**
+- [x] **Enumerate all combinations**
    - Generate all 4-edge combinations
    - Validate each corona
    - Deduplicate using canonical rotation
    - Visualize these enumerated coronas in the webpage (index.html)
    
-- [ ] **Update valid-coronas.json**
+- [x] **Update valid-coronas.json**
    - Extend JSON structure to support multiple center sizes
    - New format: `{ "1": [...], "2": [...] }`
    - Preserve existing 1-coronas
 
 ### Expected Output
-- [ ] Updated valid-coronas.json with 2-coronas added
-- [ ] Console output: count of unique 2-coronas found
-- [ ] Visualize these enumerated coronas in the webpage (index.html)
-- [ ] Unit tests pass successfully
-- [ ] Documentation updated: README.md, architecture.md
+- [x] Updated valid-coronas.json with 2-coronas added
+- [x] Console output: count of unique 2-coronas found
+- [x] Visualize these enumerated coronas in the webpage (index.html)
+- [x] Unit tests pass successfully
+- [x] Documentation updated: README.md, architecture.md, plan.md
 
 ---
 
@@ -67,7 +67,8 @@ Generate all valid coronas with center size = 3, append to valid-coronas.json
 - [ ] **Enumerate and validate**
    - Generate all 4-edge combinations
    - Apply validation and deduplication
-   - Visualize these enumerated coronas in the webpage (index.html)
+   - Add "Generate Coronas (Center = 3)" button to index.html
+   - Update web-app.js to handle center=3 enumeration
    
 - [ ] **Append to valid-coronas.json**
    - Add `"3": [...]` entry
@@ -75,9 +76,9 @@ Generate all valid coronas with center size = 3, append to valid-coronas.json
 ### Expected Output
 - [ ] valid-coronas.json includes 3-coronas
 - [ ] Count of unique 3-coronas
-- [ ] Visualize these enumerated coronas in the webpage (index.html)
+- [ ] Button for center=3 added to index.html
 - [ ] Unit tests pass successfully
-- [ ] Documentation updated: README.md, architecture.md
+- [ ] Documentation updated: README.md, architecture.md, plan.md
 
 ---
 
@@ -94,7 +95,8 @@ Generate all valid coronas with center size = 4, append to valid-coronas.json
    
 - [ ] **Enumerate and validate**
    - Same process as phases 1-2
-   - Visualize these enumerated coronas in the webpage (index.html)
+   - Add "Generate Coronas (Center = 4)" button to index.html
+   - Update web-app.js to handle center=4 enumeration
    
 - [ ] **Finalize valid-coronas.json**
    - Complete structure: `{ "1": [...], "2": [...], "3": [...], "4": [...] }`
@@ -102,9 +104,9 @@ Generate all valid coronas with center size = 4, append to valid-coronas.json
 ### Expected Output
 - [ ] Complete valid-coronas.json with all center sizes 1-4
 - [ ] Final counts for each center size
-- [ ] Visualize these enumerated coronas in the webpage (index.html)
+- [ ] Button for center=4 added to index.html
 - [ ] Unit tests pass successfully
-- [ ] Documentation updated: README.md, architecture.md
+- [ ] Documentation updated: README.md, architecture.md, plan.md
 
 ---
 
@@ -180,7 +182,7 @@ Save to `corona-compatibility.json`:
 - [ ] corona-compatibility.json with complete compatibility matrix
 - [ ] Statistics: average compatibility per corona, most/least compatible coronas
 - [ ] Unit tests pass successfully
-- [ ] Documentation updated: README.md, architecture.md
+- [ ] Documentation updated: README.md, architecture.md, plan.md
 
 ---
 

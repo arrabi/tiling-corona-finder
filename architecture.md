@@ -69,7 +69,7 @@ interface ValidationResult {
 
 **Process Flow**:
 ```
-1. Generate all edge configurations
+1. Generate all valid edge walks for center size
    ↓
 2. Generate all 4-edge combinations (cartesian product)
    ↓
@@ -82,13 +82,19 @@ interface ValidationResult {
 6. Return unique coronas
 ```
 
-**For center = 1**:
-- Edge choices: `[2^0]`, `[3^0]`, `[4^0]` (3 options)
-- Total combinations: 3^4 = 81
-- After validation: 81 (all valid for center=1)
-- After deduplication: 24 unique
+**Edge Walk Generation**:
+- Recursive search through segment combinations
+- Each segment follows from previous: `next.offset = prev.offset + prev.size`
+- Enforces unilateral constraints during generation
+- Prunes invalid walks early
 
-**Design Decision**: Simple brute force is sufficient for small center sizes. Complexity scales as O(choices^4), manageable for centers 1-4.
+**Enumeration Results**:
+- **Center = 1**: 3 edge choices → 3^4 = 81 combinations → **24 unique**
+- **Center = 2**: 5 edge choices → 5^4 = 625 combinations → **34 unique**
+- **Center = 3**: 10 edge choices → 10^4 = 10,000 combinations → **165 unique**
+- **Center = 4**: 16 edge choices → 16^4 = 65,536 combinations → **616 unique**
+
+**Design Decision**: Generic `enumerateUniqueCoronas(centerSize)` function works for any center size. Edge walk generation abstracts the complexity of different center sizes.
 
 ---
 
@@ -155,23 +161,38 @@ Regex match → EdgeSeg objects
 #### JSON Storage Format
 ```json
 {
-  "center": 1,
-  "count": 24,
-  "generated": "ISO-8601",
-  "coronas": ["compact", "notation", ...]
+  "metadata": {
+    "generated": "2026-01-18T10:44:47.684Z",
+    "centerSizes": [1, 2, 3, 4],
+    "counts": {
+      "1": 24,
+      "2": 34,
+      "3": 165,
+      "4": 616
+    },
+    "totalCoronas": 839
+  },
+  "coronas": {
+    "1": ["1|2^0|2^0|2^0|2^0", ...],
+    "2": ["2|3^0|3^0|3^0|3^0", ...],
+    "3": [...],
+    "4": [...]
+  }
 }
 ```
 
 **Design Decisions**:
-- Metadata included (center, count, timestamp)
-- Coronas stored in compact notation (not full objects)
+- Single file contains all center sizes (1-4)
+- Metadata section with counts and timestamp
+- Coronas grouped by center size for easy access
+- Compact notation for storage efficiency
 - Human-readable JSON (2-space indent)
-- One file per center size
 
-**Files**:
-- `coronas-center-1.json` (current)
-- `coronas-center-2.json` (future)
-- etc.
+**File**:
+- `valid-coronas.json` - All 839 unique coronas for centers 1-4
+
+**Generation Script**:
+- `generate-all-coronas.js` - Enumerates all centers 1-4 and saves to JSON
 
 ---
 
@@ -226,18 +247,18 @@ switch (edgeIndex) {
 ## Technology Stack
 
 ### Backend/CLI
-- **TypeScript**: Type safety, modern features
+- **JavaScript (ES6+)**: Modern features with ES modules
 - **Node.js**: Runtime for CLI scripts
-- **ts-node**: Direct TypeScript execution
+- **No build step**: Direct execution of JS files
 
 ### Web Application
-- **Vanilla TypeScript**: No framework overhead
+- **Vanilla JavaScript**: No framework overhead
 - **HTML5 Canvas**: Direct rendering control
-- **Simple HTTP Server**: Python's built-in server
+- **Simple HTTP Server**: npm http-server
 
 ### Data
 - **JSON**: Human-readable storage
-- **Python**: Alternative generation scripts (compatibility)
+- **Python**: Old scripts in `old-ignored-stuff/` (reference only)
 
 ---
 
@@ -339,23 +360,34 @@ switch (edgeIndex) {
 
 ### Current Limitations
 
-1. **Center sizes**: Only 1-4 implemented
+1. **Center sizes**: 1-4 implemented ✓
 2. **Square sizes**: Fixed to [1, 2, 3, 4]
 3. **No global tiling**: Only local coronas
-4. **Brute force**: No pruning strategies
-5. **Memory**: All coronas kept in memory
+4. **No compatibility analysis**: Not yet implemented
+5. **Memory**: All coronas kept in memory (manageable for 839 coronas)
 
 ### Scalability Considerations
 
-**Center size complexity**:
+**Center size complexity (actual counts)**:
 - Center 1: 24 unique coronas
-- Center 2: Estimated 100-500 coronas
-- Center 3: Estimated 1000-5000 coronas
-- Center 4: Estimated 10000+ coronas
+- Center 2: 34 unique coronas
+- Center 3: 165 unique coronas
+- Center 4: 616 unique coronas
+- **Total: 839 coronas**
 
-**Memory usage**: ~100 bytes per corona in memory
+**Edge walk counts by center**:
+- Center 1: 3 valid edge walks
+- Center 2: 5 valid edge walks
+- Center 3: 10 valid edge walks
+- Center 4: 16 valid edge walks
 
-**Computation time**: Scales exponentially with edge walk complexity
+**Memory usage**: ~100 bytes per corona in memory (~84 KB total)
+
+**Computation time**: 
+- Center 1-2: Instant (<10ms)
+- Center 3: Fast (~100ms)
+- Center 4: Moderate (~2-3 seconds)
+- Scales exponentially with edge walk complexity
 
 ---
 
@@ -367,9 +399,11 @@ switch (edgeIndex) {
 - Known valid/invalid examples
 
 ### Enumeration Testing
-- Count verification against expected results
-- Duplicate detection
+- Count verification against expected results (24, 34, 165, 616)
+- All coronas pass validation
+- Duplicate detection via canonical rotation
 - Canonical form consistency
+- Edge walk generation correctness
 
 ### Serialization Testing
 - Roundtrip: `Corona → compact → Corona`

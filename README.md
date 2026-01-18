@@ -44,9 +44,15 @@ npm start
 
 Expected output:
 ```
+Enumerating coronas for center = 1...
 Unique coronas with center = 1: 24
-1|2^0|2^0|2^0|2^0
-1|2^0|2^0|2^0|3^0
+
+Enumerating coronas for center = 2...
+Unique coronas with center = 2: 34
+
+Sample 2-coronas:
+2|1^0,2^1|1^0,2^1|1^0,2^1|1^0,2^1
+2|1^0,2^1|1^0,2^1|1^0,2^1|3^0
 ...
 ```
 
@@ -61,7 +67,7 @@ Expected output:
 ✓ valid: center=2, all edges size 3
 ✓ valid: center=1, mixed edge sizes
 ...
-23 passed, 0 failed
+33 passed, 0 failed
 ```
 
 ### Other Commands
@@ -71,14 +77,21 @@ Expected output:
 
 ### Pre-generated Data
 
-The repository includes `coronas-center-1.json` with all 24 unique coronas for center size 1. This allows you to:
+The repository includes `valid-coronas.json` with all unique coronas for center sizes 1-4:
+- Center 1: 24 coronas
+- Center 2: 34 coronas
+- Center 3: 165 coronas
+- Center 4: 616 coronas
+- **Total: 839 coronas**
+
+This allows you to:
 - Load coronas without recalculating them
 - Use as reference data for testing
-- Start working with center 2, 3, and 4 without regenerating center 1
+- Start compatibility analysis without regenerating coronas
 
 To regenerate the JSON file:
 ```bash
-npm run generate
+node generate-all-coronas.js
 ```
 
 ---
@@ -158,18 +171,41 @@ No corner or vertex logic is used; everything is edge-based.
 
 ## Enumeration & Deduplication
 
-### For Center = 1
+### Edge Walk Generation
 
-- Valid edges are only single segments: `(2,0)`, `(3,0)`, `(4,0)`
-- Segment `(1,0)` is excluded by the unilateral rule
-- All 4-edge combinations are generated (3^4 = 81 combinations)
+For any center size, the algorithm generates all valid edge walks:
+- Each walk is a sequence of segments covering the center length
+- Segments must form a real walk (next offset = prev offset + prev size)
+- Walk must start at offset 0 and reach at least the center size
+- Excludes segments with size == center at offset == 0 (unilateral)
+- Excludes consecutive segments with equal sizes (unilateral)
+
+### Center Size Examples
+
+**Center = 1:**
+- Valid edges: `(2,0)`, `(3,0)`, `(4,0)` (single segments only)
+- Segment `(1,0)` excluded by unilateral rule
+- Result: **24 unique coronas**
+
+**Center = 2:**
+- Valid edges include:
+  - Single segments: `(3,0)`, `(4,0)` (not `(2,0)`)
+  - Two segments: `(1,0),(2,1)`, `(1,0),(3,1)`, `(1,0),(4,1)`, etc.
+- Result: **34 unique coronas**
+
+**Center = 3:**
+- Valid edges include more complex walks with up to 3 segments
+- Result: **165 unique coronas**
+
+**Center = 4:**
+- Most complex edge walks with up to 4 segments
+- Result: **616 unique coronas**
+
+### Deduplication
+
+- All 4-edge combinations are generated from valid edge walks
 - Coronas are **deduplicated up to cyclic rotation** of the four edges (equitransitive symmetry)
 - Reflections are *not* identified (unilateral assumption)
-
-### Results
-
-- **81** raw valid coronas
-- **24** unique coronas up to rotation
 
 ---
 
@@ -199,7 +235,10 @@ interface ValidationResult {
 ### Functions
 
 - `canonicalRotationEdges()`: compute canonical form for deduplication
-- `enumerateUniqueCoronasCenter1()`: enumerate all unique coronas for center = 1
+- `generateEdgeWalks(centerSize)`: generate all valid edge walks for any center size
+- `enumerateUniqueCoronas(centerSize)`: enumerate all unique coronas for any center size
+- `enumerateUniqueCoronasCenter1()`: convenience function for center = 1
+- `enumerateUniqueCoronasCenter2()`: convenience function for center = 2
 
 ### Exports
 
@@ -249,8 +288,9 @@ This implementation uses:
 ## Files
 
 - `corona.js` - Shared Corona class and validation logic
-- `corona-finder.js` - Main enumeration implementation
-- `generate-js-new.js` - Script to generate and save coronas to JSON
+- `corona-finder.js` - Main enumeration implementation with edge walk generation
+- `generate-all-coronas.js` - Script to generate all coronas (centers 1-4) and save to JSON
+- `valid-coronas.json` - Pre-generated data with all 839 unique coronas
 - `web-app.js` - Web application for visualization
 - `tests-app.js` - Test suite visualization
 - `corona-finder-test.js` - Unit tests
