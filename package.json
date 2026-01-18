@@ -7,7 +7,7 @@
   "scripts": {
     "start": "node corona-finder.js",
     "generate": "node generate-js-new.js",
-    "serve": "python3 -m http.server 8000",
+    "serve": "live-server",
     "test": "node corona-finder-test.js"
   },
   "keywords": [
@@ -16,5 +16,8 @@
     "geometry"
   ],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "live-server": "^1.2.2"
+  }
 }

@@ -108,8 +108,8 @@ function main() {
     }
 }
 
-// Run if this is the main module
-if (import.meta.url === `file://${process.argv[1]}`) {
+// Run if this is the main module (only in Node.js)
+if (typeof process !== 'undefined' && import.meta.url === `file://${process.argv[1]}`) {
     main();
 }
 
