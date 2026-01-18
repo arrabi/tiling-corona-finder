@@ -1,0 +1,23 @@
+{
+  "name": "tiling-corona-finder",
+  "version": "1.0.0",
+  "description": "Equitransitive Square Corona Enumeration",
+  "main": "corona-finder.ts",
+  "scripts": {
+    "start": "ts-node corona-finder.ts",
+    "build": "tsc",
+    "dev": "ts-node corona-finder.ts"
+  },
+  "keywords": [
+    "tiling",
+    "enumeration",
+    "geometry"
+  ],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^22.10.5",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.2"
+  }
+}
