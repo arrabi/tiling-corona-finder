@@ -49,6 +49,20 @@ Unique coronas with center = 1: 24
 ...
 ```
 
+### Run Tests
+
+```bash
+npm test
+```
+
+Expected output:
+```
+✓ valid: center=2, all edges size 3
+✓ valid: center=1, mixed edge sizes
+...
+23 passed, 0 failed
+```
+
 ### Other Commands
 
 - **Build to JavaScript**: `npm run build` (outputs to `compiled/`)
