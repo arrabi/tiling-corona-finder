@@ -5,8 +5,11 @@
   "main": "corona-finder.ts",
   "scripts": {
     "start": "ts-node corona-finder.ts",
+    "generate": "python3 generate.py",
     "build": "tsc",
-    "dev": "ts-node corona-finder.ts"
+    "build:web": "npx tsc web-app.ts --outDir . --target ES2020 --lib ES2020,DOM --skipLibCheck",
+    "dev": "ts-node corona-finder.ts",
+    "serve": "npm run build:web && python3 -m http.server 8000"
   },
   "keywords": [
     "tiling",

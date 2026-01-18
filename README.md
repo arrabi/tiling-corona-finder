@@ -43,6 +43,19 @@ Unique coronas with center = 1: 24
 
 - **Build to JavaScript**: `npm run build` (outputs to `dist/`)
 - **Run directly**: `ts-node corona-finder.ts`
+- **Generate JSON**: `npm run generate` or `python3 generate.py`
+
+### Pre-generated Data
+
+The repository includes `coronas-center-1.json` with all 24 unique coronas for center size 1. This allows you to:
+- Load coronas without recalculating them
+- Use as reference data for testing
+- Start working with center 2, 3, and 4 without regenerating center 1
+
+To regenerate the JSON file:
+```bash
+npm run generate
+```
 
 ---
 

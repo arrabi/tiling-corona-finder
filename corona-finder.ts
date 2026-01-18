@@ -243,6 +243,21 @@ function enumerateUniqueCoronasCenter1(): Corona[] {
 }
 
 // -----------------------------
+// Load coronas from JSON file
+// -----------------------------
+
+function loadCoronasFromFile(filename: string): Corona[] {
+    const fs = require('fs');
+    try {
+        const data = JSON.parse(fs.readFileSync(filename, 'utf-8'));
+        return data.coronas.map((compact: string) => Corona.fromCompact(compact));
+    } catch (error) {
+        console.error(`Error loading coronas from ${filename}:`, error);
+        return [];
+    }
+}
+
+// -----------------------------
 // Run enumeration
 // -----------------------------
 
@@ -261,4 +276,4 @@ if (require.main === module) {
 }
 
 // Export for use as a module
-export { EdgeSeg, Corona, ValidationResult, canonicalRotationEdges, enumerateUniqueCoronasCenter1 };
+export { EdgeSeg, Corona, ValidationResult, canonicalRotationEdges, enumerateUniqueCoronasCenter1, loadCoronasFromFile };
