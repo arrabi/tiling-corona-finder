@@ -18,6 +18,7 @@ This project enumerates **unilateral, equitransitive tilings** of the plane by s
 
 - `README.md`: Main project documentation and quick start guide.
 - `about the app.md`: Detailed explanation of corona structure, constraints, and code patterns.
-- `architecture.md`: Overview of the system architecture and design decisions.
+- `architecture.md`: Overview of the system architecture and design decisions. document decisions made here.
+- `plan.md`: Project planning and task breakdown. whenever a task or phase is implemented, check it off in plan.md.
 
 make sure to check these files before making changes to understand the project context and requirements.
