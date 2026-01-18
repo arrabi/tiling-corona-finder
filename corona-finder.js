@@ -32,6 +32,59 @@ function canonicalRotationEdges(edges) {
 }
 
 // -----------------------------
+// Generate edge walks for any center size
+// -----------------------------
+
+function generateEdgeWalks(centerSize, allowedSizes = [1, 2, 3, 4]) {
+    /**
+     * Generate all valid edge walks that cover a given center size.
+     * 
+     * Rules:
+     * - Walk must start at offset 0
+     * - Each segment has {size, offset}
+     * - Next segment offset = prev offset + prev size (real walk)
+     * - Walk must reach at least centerSize
+     * - No segment with size == centerSize at offset == 0 (unilateral)
+     * - No consecutive segments with equal sizes (unilateral)
+     * 
+     * Returns: array of edge walks, where each walk is an array of segments
+     */
+    const walks = [];
+    
+    function search(currentWalk, currentOffset) {
+        // If we've reached or exceeded the center length, this is a valid walk
+        if (currentOffset >= centerSize) {
+            walks.push([...currentWalk]);
+            return;
+        }
+        
+        // Try adding each allowed size
+        for (const size of allowedSizes) {
+            // Check unilateral constraint: no size == center at offset == 0
+            if (currentOffset === 0 && size === centerSize) {
+                continue;
+            }
+            
+            // Check unilateral constraint: no consecutive equal sizes
+            if (currentWalk.length > 0) {
+                const lastSeg = currentWalk[currentWalk.length - 1];
+                if (lastSeg.size === size) {
+                    continue;
+                }
+            }
+            
+            // Add segment and continue search
+            currentWalk.push({ size, offset: currentOffset });
+            search(currentWalk, currentOffset + size);
+            currentWalk.pop();
+        }
+    }
+    
+    search([], 0);
+    return walks;
+}
+
+// -----------------------------
 // Enumeration for center = 1
 // -----------------------------
 
@@ -42,15 +95,34 @@ function enumerateUniqueCoronasCenter1() {
      *   - (1,0) is excluded by unilateral rule
      *   - deduplicate by cyclic rotation of the 4 edges
      */
-    const c = 1;
-    const allowedSizes = [1, 2, 3, 4];
+    return enumerateUniqueCoronas(1);
+}
 
-    const edgeChoices = [
-        [{ size: 2, offset: 0 }],
-        [{ size: 3, offset: 0 }],
-        [{ size: 4, offset: 0 }]
-    ];
+// -----------------------------
+// Enumeration for center = 2
+// -----------------------------
 
+function enumerateUniqueCoronasCenter2() {
+    /**
+     * For center = 2:
+     *   - valid edge walks cover length 2
+     *   - (2,0) is excluded by unilateral rule
+     *   - deduplicate by cyclic rotation of the 4 edges
+     */
+    return enumerateUniqueCoronas(2);
+}
+
+// -----------------------------
+// Generic enumeration for any center size
+// -----------------------------
+
+function enumerateUniqueCoronas(centerSize, allowedSizes = [1, 2, 3, 4]) {
+    /**
+     * Enumerate all unique coronas for a given center size.
+     * Deduplicates by cyclic rotation of the 4 edges.
+     */
+    const edgeChoices = generateEdgeWalks(centerSize, allowedSizes);
+    
     const seen = new Set();
     const unique = [];
 
@@ -59,7 +131,7 @@ function enumerateUniqueCoronasCenter1() {
         for (const e1 of edgeChoices) {
             for (const e2 of edgeChoices) {
                 for (const e3 of edgeChoices) {
-                    const cor = new Corona(c, [e0, e1, e2, e3]);
+                    const cor = new Corona(centerSize, [e0, e1, e2, e3]);
                     
                     if (!cor.validate(allowedSizes).ok) {
                         continue;
@@ -100,11 +172,17 @@ function loadCoronasFromFile(filename) {
 // -----------------------------
 
 function main() {
-    const coronas = enumerateUniqueCoronasCenter1();
-    console.log(`Unique coronas with center = 1: ${coronas.length}`);
+    console.log('Enumerating coronas for center = 1...');
+    const coronas1 = enumerateUniqueCoronasCenter1();
+    console.log(`Unique coronas with center = 1: ${coronas1.length}`);
     
-    for (const c of coronas) {
-        console.log(c.toCompact());
+    console.log('\nEnumerating coronas for center = 2...');
+    const coronas2 = enumerateUniqueCoronasCenter2();
+    console.log(`Unique coronas with center = 2: ${coronas2.length}`);
+    
+    console.log('\nSample 2-coronas:');
+    for (let i = 0; i < Math.min(5, coronas2.length); i++) {
+        console.log(coronas2[i].toCompact());
     }
 }
 
@@ -114,4 +192,12 @@ if (typeof process !== 'undefined' && import.meta.url === `file://${process.argv
 }
 
 // Export for use as a module
-export { Corona, canonicalRotationEdges, enumerateUniqueCoronasCenter1, loadCoronasFromFile };
+export { 
+    Corona, 
+    canonicalRotationEdges, 
+    generateEdgeWalks,
+    enumerateUniqueCoronas,
+    enumerateUniqueCoronasCenter1, 
+    enumerateUniqueCoronasCenter2,
+    loadCoronasFromFile 
+};
